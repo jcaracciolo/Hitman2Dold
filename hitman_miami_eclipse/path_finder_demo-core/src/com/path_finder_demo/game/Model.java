@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Model {
-	Goon goon;
+	Goon character;
 	SpriteBatch batch;
 	Texture texture;
 	TextureRegion[] walkFrames;
@@ -16,11 +16,11 @@ public class Model {
 	Animation walkAnimation;
 	TextureRegion currentFrame;
 	float stateTime;
-	double tile_to_pixel_ratio;
+	
 	//"assets/hitman_straight_walk_x2.png"
 	
-	public Model(String sprite_path,int sprite_width, int animation_length, double tile_to_pixel_ratio){
-		this.tile_to_pixel_ratio = tile_to_pixel_ratio;
+	public Model(String sprite_path,int sprite_width, int animation_length){
+		
 		batch = new SpriteBatch();
 		texture = new Texture(Gdx.files.internal(sprite_path));
 		TextureRegion[][] tmp = TextureRegion.split(texture, sprite_width, sprite_width);
@@ -31,18 +31,18 @@ public class Model {
 		walkAnimation = new Animation(0.025f,walkFrames);
 		stateTime = 0f;
 	}
-	public void setPlayer(Goon goon){
-		this.goon = goon;
+	public void setPlayer(Goon character){
+		this.character = character;
 	}
 	public void draw(){
 		currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		batch.begin();
-//		if (goon.current_path != null){
-//			for (Step s:goon.current_path.steps){
-//				batch.draw(currentFrame, s.getX(),s.getY());
+//		if (character.currentPath != null){
+//			for (Step s:character.currentPath.steps){
+//				batch.draw(currentFrame, s.getPosition().x,s.getPosition().y);
 //			}
 //		}
-		batch.draw(currentFrame, goon.getX(),goon.getY());
+		batch.draw(currentFrame, (int)character.getPosition().x, (int)character.getPosition().y);
 		batch.end();
 	}
 	public void update(){

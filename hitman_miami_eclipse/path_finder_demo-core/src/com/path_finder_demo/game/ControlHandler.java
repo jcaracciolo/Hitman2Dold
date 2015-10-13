@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 
 class ControlHandler implements InputProcessor {
 	private static int MOVE_LEFT = 0;
@@ -27,16 +28,16 @@ class ControlHandler implements InputProcessor {
 	private Player player;
 	private LevelMap map;
 //	private Goon goon;
-	private Set<Goon> goon_set;
+	private Set<Goon> goonSet;
 	
-	public ControlHandler(Player player,Set<Goon> goon_set, LevelMap map){
+	public ControlHandler(Player player, Set<Goon> goonSet, LevelMap map){
 		this.player = player;
 		this.map = map;
-		this.goon_set = goon_set;
+		this.goonSet = goonSet;
 	}
 	public void update(){
-		double x,y;
-    	x=y=0.0;
+		float x,y;
+    	x=y=0f;
 		if (move_left)
 			x = -1;
 		if (move_right)
@@ -49,12 +50,13 @@ class ControlHandler implements InputProcessor {
 			x *= SIN45;
 			y *= SIN45;
         }
-		if (x!=0 || y!=0)
-        	player.move(x, y, move_run);
+		if (x!=0 || y!=0){
+        	player.move(new Vector2(x,y), move_run);
+		}
 		if (mouse_click){
 			mouse_click = false;
-			for(Goon g: goon_set)
-				g.move(mouse_x,864- mouse_y);
+			for(Goon g: goonSet)
+				g.moveTo(new Vector2(mouse_x,864- mouse_y));
 		}
 	}
 	
@@ -106,8 +108,8 @@ class ControlHandler implements InputProcessor {
     	mouse_click = true;
     	mouse_x = screenX;
     	mouse_y = screenY;
-    	System.out.println("x : " + mouse_x + " y: " + (864-mouse_y));
         return false;
+    	
     }
 
     @Override

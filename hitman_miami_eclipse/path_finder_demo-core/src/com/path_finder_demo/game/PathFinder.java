@@ -3,14 +3,16 @@ package com.path_finder_demo.game;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class PathFinder {
 	private ArrayList<Node> closed = new ArrayList<Node>();
 	private ArrayList<Node> open = new ArrayList<Node>();
 	private Node[][] nodes;
-	private TileBasedMap map;
+	private LevelMap map;
 	private int maxSearchDistance;
 	
-	public PathFinder(TileBasedMap map, int maxSearchDistance){
+	public PathFinder(LevelMap map, int maxSearchDistance){
 		this.map = map;
 		this.maxSearchDistance = maxSearchDistance;
 		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];
@@ -22,15 +24,18 @@ public class PathFinder {
 		
 	}
 	
-	public Path findPath(int pixel_sx, int pixel_sy, int pixel_tx, int pixel_ty) {
-		int sx = pixel_sx / 32;
-	    int sy = pixel_sy / 32;
-	    int tx = pixel_tx / 32;
-	    int ty = pixel_ty / 32;
+	public Path findPath(Vector2 startPosition, Vector2 finalPosition) {
 		
-		if (map.blocked(null, pixel_tx, pixel_ty) || (sx == tx && sy == ty)) {
-	      return null;
+		
+		int sx = Math.round(startPosition.x) / map.getTileWidth();
+	    int sy = Math.round(startPosition.y) / map.getTileWidth();
+	    int tx = Math.round(finalPosition.x) / map.getTileWidth();
+	    int ty = Math.round(finalPosition.y) / map.getTileWidth();
+	    
+	    if (map.blocked(null, finalPosition) || (sx == tx && sy == ty)) {
+		      return null;
 	    }
+	    
 	    cleanNodes();
 	    
 	    nodes[sx][sy].cost = 0 + manhattanDistance(sx,sy,tx,ty);
@@ -60,7 +65,9 @@ public class PathFinder {
 	            int xp = x+current.x;
 	            int yp = y+current.y;
 	            
-	            if (!map.blocked(null,xp * 32,yp * 32)) {
+	            Vector2 currPosition = new Vector2(xp * map.getTileWidth(),yp * map.getTileWidth());
+	            
+	            if (!map.blocked(null,currPosition)) {
 	              float nextStepCost = current.cost + map.getCost(null,current.x, current.y, xp,yp) + manhattanDistance(current.x,current.y,xp,yp);
 	              Node neighbour = nodes[xp][yp];
 	              if (nextStepCost < neighbour.cost) {
@@ -85,13 +92,16 @@ public class PathFinder {
 	    	return null;
 	    }
 	    Path path = new Path();
+	    // agregar la ultima posicion? path.prepend(finalPosition);
 	    Node target = nodes[tx][ty];
-	    
+	    Vector2 stepPosition = new Vector2();
 	    while (target != nodes[sx][sy]){
-	      path.prependStep(target.getX()*32, target.getY()*32);
-	      target = target.getParent();
+	    	stepPosition = new Vector2(target.getX() * 32, target.getY() * 32);
+	    	path.prependStep(stepPosition);
+	    	target = target.getParent();
+	    	
 	    }
-//	    path.prependStep(sx * 32, sy * 32);
+	    path.prependStep(new Vector2(sx * 32,sy*32));
 	    return path;  
 	}
 	private int manhattanDistance(int x, int y, int xp, int yp){

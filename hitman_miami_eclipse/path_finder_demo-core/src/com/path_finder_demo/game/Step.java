@@ -1,18 +1,14 @@
 package com.path_finder_demo.game;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Step {
-	private int x;
-	private int y;
+	private Vector2 position;
 	
-	public Step(int x, int y){
-		this.x = x;
-		this.y = y;
+	public Step(Vector2 position){
+		this.position = position;
 	}
-	public int getX(){
-		return x;
-	}
-	public int getY(){
-		//TODO
-		return y;
+	public Vector2 getPosition(){
+		return new Vector2(position);
 	}
 }
