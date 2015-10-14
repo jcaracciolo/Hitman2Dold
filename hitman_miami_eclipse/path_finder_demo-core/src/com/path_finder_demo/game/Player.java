@@ -26,5 +26,9 @@ public class Player extends Character {
 		// TODO
 		super.update();
 	}
+	
+	public void stopMoving() {
+		this.isMoving = false;
+	}
 
 }

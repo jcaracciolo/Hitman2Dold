@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class Character implements Movable {
 	protected static final float NORMAL_SPEED = 60f;
-	protected static final float RUNNING_SPEED = 65f;
+	protected static final float RUNNING_SPEED = 100f;
 	protected Vector2 direction;
 	protected Rectangle hitBox;
 	protected Model model;
@@ -42,13 +42,15 @@ public abstract class Character implements Movable {
 	@Override
 	public boolean move(Vector2 direction) {
 		if (direction.isZero()){
+			
 			return false;
 		}
 		this.direction.set(direction.nor());
+		this.isMoving = true;
+		
 		return true;
 	}
 	public boolean move(Vector2 direction, boolean running) {
-		
 		move(direction);
 		this.running = running;
 		return true;
@@ -60,10 +62,8 @@ public abstract class Character implements Movable {
 	@Override
 	public void update(){
 		if (!isMoving || direction.isZero()){
-			//System.out.println(isMoving);
 			return;
 		}
-		
 		float speed;
 		if (running){
 			speed = RUNNING_SPEED;
@@ -71,21 +71,24 @@ public abstract class Character implements Movable {
 		else {
 			speed = NORMAL_SPEED;
 		}
+		Vector2 velocity;
+		velocity = new Vector2(direction);
+		velocity.scl(speed);
+		Vector2 movement = new Vector2();
+		movement = velocity.scl(Gdx.graphics.getDeltaTime());
 		Vector2 currPosition = new Vector2();
-		currPosition = hitBox.getPosition(currPosition);
-		currPosition = currPosition.add(direction.scl(speed * Gdx.graphics.getDeltaTime()));
-		Rectangle currHitBox = new Rectangle(hitBox);
-		currHitBox.setPosition(currPosition);
-		hitBox = currHitBox;
-		model.update();
-//		if (map.isValid(currHitBox)){
-//			hitBox = currHitBox;
-//			model.update();
-//		}
-//		else {
-//			direction.setZero();
-//			isMoving = false;
-//		}
+		hitBox.getPosition(currPosition);
+		currPosition.add(movement);
+		
+		Rectangle currHitBox = new Rectangle(currPosition.x, currPosition.y, hitBox.width, hitBox.width);
+		
+		if (map.isValid(currHitBox)){
+			hitBox.set(currHitBox);
+			model.update();
+		}
+		else {
+			isMoving = false;
+		}
 		
 	}
 

@@ -35,9 +35,9 @@ public abstract class NPC extends Character {
 		currPosition = hitBox.getPosition(currPosition);
 		Path auxPath = aStarPathFinder.findPath(currPosition, position);
 		if (auxPath != null && auxPath.hasNextStep()){
-			
 			currentPath = auxPath;
-			//currentStep = currentPath.nextStep();
+			currentStep = currentPath.nextStep();
+			move(currentStep.getPosition().sub(getPosition()));
 			isMoving = true;
 			return true;
 		}
@@ -58,7 +58,6 @@ public abstract class NPC extends Character {
 		if (currentStep == null || currentStep.getPosition().epsilonEquals(getPosition(), EPSILON)){
 			
 			if (currentPath.hasNextStep()){
-				System.out.println("algo");
 				currentStep = currentPath.nextStep();
 				move(currentStep.getPosition().sub(getPosition()));
 			}
@@ -67,7 +66,6 @@ public abstract class NPC extends Character {
 				isMoving = false;
 			}
 		}
-		System.out.println(currentStep.getPosition().epsilonEquals(getPosition(), EPSILON));
 		super.update();	
 	}
 	
