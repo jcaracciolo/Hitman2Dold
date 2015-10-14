@@ -35,7 +35,7 @@ public class PlayerModel {
 	public void draw(){
 		currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		batch.begin();
-		batch.draw(currentFrame, player.getX(),player.getY());
+		batch.draw(currentFrame, player.getPosition().x,player.getPosition().y);
 		batch.end();
 	}
 	public void updateAnimation(){

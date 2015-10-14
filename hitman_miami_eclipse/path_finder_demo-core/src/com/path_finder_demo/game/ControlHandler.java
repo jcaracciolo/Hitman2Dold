@@ -36,23 +36,23 @@ class ControlHandler implements InputProcessor {
 		this.goonSet = goonSet;
 	}
 	public void update(){
-		float x,y;
-    	x=y=0f;
-		if (move_left)
-			x = -1;
-		if (move_right)
-			x = 1;
-		if (move_up)
-			y = 1;
-		if (move_down)
-			y = -1;
-		if (y!=0 && x!=0){
-			x *= SIN45;
-			y *= SIN45;
-        }
-		if (x!=0 || y!=0){
-        	player.move(new Vector2(x,y), move_run);
-		}
+//		float x,y;
+//    	x=y=0f;
+//		if (move_left)
+//			x = -1;
+//		if (move_right)
+//			x = 1;
+//		if (move_up)
+//			y = 1;
+//		if (move_down)
+//			y = -1;
+//		if (y!=0 && x!=0){
+//			x *= SIN45;
+//			y *= SIN45;
+//        }
+//		if (x!=0 || y!=0){
+//        	player.move(new Vector2(x,y), move_run);
+//		}
 		if (mouse_click){
 			mouse_click = false;
 			for(Goon g: goonSet)
