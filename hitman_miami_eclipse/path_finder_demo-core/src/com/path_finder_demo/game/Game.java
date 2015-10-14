@@ -73,7 +73,6 @@ public class Game extends ApplicationAdapter {
 		
 		
 		for(int i=0; i< 1; i++){
-			
 			goon_model = new Model("assets/hitman_straight_walk.png", 32, 15);
 			goon = new Goon(new Rectangle(50,50, 32,32),map,goon_model);
 			goon.setAStarPathFinder(path_finder);
