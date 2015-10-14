@@ -93,6 +93,7 @@ public class PathFinder {
 	    }
 	    Path path = new Path();
 	    // agregar la ultima posicion? path.prepend(finalPosition);
+	    path.prependStep(;
 	    Node target = nodes[tx][ty];
 	    Vector2 stepPosition = new Vector2();
 	    while (target != nodes[sx][sy]){
@@ -101,7 +102,7 @@ public class PathFinder {
 	    	target = target.getParent();
 	    	
 	    }
-	    path.prependStep(new Vector2(sx * 32,sy*32));
+	    
 	    return path;  
 	}
 	private int manhattanDistance(int x, int y, int xp, int yp){
