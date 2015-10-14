@@ -56,11 +56,10 @@ public class Game extends ApplicationAdapter {
 		
 		//LinearPathFinder path_finder = new LinearPathFinder(map);
 		
-		//player_model = new PlayerModel("assets/hitman_straight_walk.png", 32, 15);
-//		player_model = new Model("assets/hitman_straight_walk.png", 32, 15);
-//		player = new Player(new Rectangle(50,50,16,12),map, player_model);
-//		//player_model.setPlayer(player);
-//		player_model.draw();
+		player_model = new Model("assets/hitman_walk.png", 18,13, 15);
+		player = new Player(new Rectangle(50,50,16,12),map, player_model);
+		player_model.setPlayer(player);
+
 		
 		fps_logger = new FPSLogger();
 		
