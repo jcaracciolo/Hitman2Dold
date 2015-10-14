@@ -18,12 +18,14 @@ public class Noise {
 	private double effectiveRange ;
 	private Character emitter; 
 	private NoiseHandler handler ;
+	private boolean isShot ;
 	
-	public Noise(Vector2 source, Character emitter,double effectiveRange, NoiseHandler handler) {
+	public Noise(Vector2 source, Character emitter,double effectiveRange, NoiseHandler handler, boolean isShot) {
 		this.source=source ;
 		this.emitter=emitter ;
 		this.effectiveRange = effectiveRange ;
 		this.handler=handler; 
+		this.isShot= isShot ;
 	}
 	
 	public Vector2 getSource(){
@@ -36,6 +38,10 @@ public class Noise {
 	
 	public Character getEmitter(){
 		return this.emitter;
+	}
+	
+	public boolean isShot() {
+		return isShot ;
 	}
 	
 	public void manage() {
