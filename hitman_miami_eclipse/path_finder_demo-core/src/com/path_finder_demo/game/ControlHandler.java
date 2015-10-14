@@ -50,7 +50,7 @@ class ControlHandler implements InputProcessor {
 			x *= SIN45;
 			y *= SIN45;
         }
-		if (x!=0 || y!=0){
+		if ((x!=0 || y!=0)&& player!= null){
         	player.move(new Vector2(x,y), move_run);
 		}
 		else {

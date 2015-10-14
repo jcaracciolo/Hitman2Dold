@@ -94,21 +94,17 @@ public class PathFinder {
 	    Path path = new Path();
 	    // agregar la ultima posicion? path.prepend(finalPosition);
 	    
+	    // path.prependStep();
 	    Node target = nodes[tx][ty];
 	    Vector2 stepPosition = new Vector2();
 	    while (target != nodes[sx][sy]){
-	    	stepPosition = getStepPosition(target);
-	    	path.prependStep(tileCorrection(stepPosition));
+	    	stepPosition = new Vector2(target.getX() * 32, target.getY() * 32);
+	    	path.prependStep(stepPosition);
 	    	target = target.getParent();
+	    	
 	    }
 	    
 	    return path;  
-	}
-	private Vector2 getStepPosition(Node target) {
-		float stepX, stepY;
-		stepX = target.getX() * map.getTileWidth() - 8.5f;
-		stepY = target.getY() * map.getTileWidth() - 7f;
-		return new Vector2 (stepX,stepY);
 	}
 	private int manhattanDistance(int x, int y, int xp, int yp){
 		return Math.abs(xp - x) + Math.abs(yp -y);
@@ -120,12 +116,6 @@ public class PathFinder {
 				n.looseParent();
 			}
 		}
-	}
-	/*
-	 * Metodo de correccion para que el camino este centrado
-	 */
-	private Vector2 tileCorrection(Vector2 position){
-		return position.add(map.getTileWidth()/2,map.getTileWidth()/2);
 	}
 	private class Node implements Comparable <Node>{
 		private int x;

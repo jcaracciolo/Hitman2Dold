@@ -1,5 +1,7 @@
 package com.path_finder_demo.game;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class LinearPathFinder {
 	private LevelMap map;
 	
@@ -7,7 +9,7 @@ public class LinearPathFinder {
 		this.map = map;
 	}
 	public Path findPath(int sx, int sy, int tx, int ty){
-		if (map.blocked(null,tx,ty)){
+		if (map.blocked(null,new Vector2(tx,ty))){
 			return null;
 		}
 		Path path = new Path(); 
@@ -18,15 +20,15 @@ public class LinearPathFinder {
 		for(float x = sx; Math.abs(tx-x) > 1 ; x+=inc_x){
 			for (float y = sy;  Math.abs(ty-y) > 1; y+=inc_y){
 				
-				if (map.blocked(null, (int)x, (int)y)){
+				if (map.blocked(null, new Vector2((int)x, (int)y))){
 					return null;
 				}
 				else {
-					path.prependStep((int)x, (int)y);
+					path.prependStep(new Vector2((int)x,(int)y));
 				}
 			}
 		}
-		path.prependStep(tx, ty);
+		path.prependStep(new Vector2(tx,ty));
 		return path;
 	}
 }
