@@ -93,7 +93,7 @@ public class PathFinder {
 	    }
 	    Path path = new Path();
 	    // agregar la ultima posicion? path.prepend(finalPosition);
-	    path.prependStep(;
+	    // path.prependStep();
 	    Node target = nodes[tx][ty];
 	    Vector2 stepPosition = new Vector2();
 	    while (target != nodes[sx][sy]){
