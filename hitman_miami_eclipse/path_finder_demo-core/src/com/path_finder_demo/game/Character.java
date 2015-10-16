@@ -87,14 +87,19 @@ public abstract class Character implements Movable {
 		Rectangle currHitBox = getDirectionalHitBox(direction, speed);
 		
 		if (!map.isValid(currHitBox)) {
-			
+			/*
+			 * Este if sirve para que los personajes no se queden trabados si la coordenada
+			 * x del movimiento es muy chica y hay un obstaculo que no les permite continuar,
+			 * sobre todo en el caso de las esquinas. Mas abajo hay un if analogo para la
+			 * coorenada y.
+			 */
 			if (direction.x!= 0 && Math.abs(direction.x) <  DIRECTIONAL_EPSILON) {
-				direction = new Vector2(1f, direction.y).nor();
+				direction = new Vector2(1f * Math.signum(direction.y), direction.y).nor();
 			}
 			currHitBox = getDirectionalHitBox(new Vector2(direction.x,0), speed);
 			if (!map.isValid(currHitBox) || direction.x == 0f){
 				if (direction.y!= 0 && Math.abs(direction.y) < DIRECTIONAL_EPSILON) {
-					direction = new Vector2(direction.x, 1f).nor();
+					direction = new Vector2(direction.x, 1f * Math.signum(direction.y)).nor();
 				}
 				currHitBox = getDirectionalHitBox(new Vector2(0,direction.y), speed);
 				if (!map.isValid(currHitBox) || direction.y == 0f){
