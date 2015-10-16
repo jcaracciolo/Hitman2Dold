@@ -19,7 +19,6 @@ public class Game extends ApplicationAdapter {
 	Texture img;
 	TiledMap tiled_map;
 	Goon goon;
-//	NPC npc;
 	Model goon_model;
 	PathFinder path_finder;
 	LevelMap map;
@@ -27,7 +26,6 @@ public class Game extends ApplicationAdapter {
 	OrthogonalTiledMapRenderer renderer;
 	int[][] moveset;
 	int i = 0;
-	double tile_to_pixel_ratio;
 	FPSLogger fps_logger;
 	ControlHandler control;
 	RandArray<Vector2> rand_array;
@@ -35,7 +33,6 @@ public class Game extends ApplicationAdapter {
 	Model player_model;
 	Set<Goon> goon_set = new HashSet<Goon>();
 	Set<Model> goon_model_set = new HashSet<Model>();
-	float timer = 0f;
 	
 	@Override
 	public void create () {
@@ -51,7 +48,6 @@ public class Game extends ApplicationAdapter {
 		
 		
 		LevelMap map = new LevelMap(w,h, 32,tiled_map);
-		tile_to_pixel_ratio = w/(double) map.getWidthInTiles();
 		
 		
 		//LinearPathFinder path_finder = new LinearPathFinder(map);
@@ -59,19 +55,13 @@ public class Game extends ApplicationAdapter {
 		player_model = new Model("assets/hitman_walk.png", 18,13, 15);
 		player = new Player(new Rectangle(50,50,16,12),map, player_model);
 		player_model.setPlayer(player);
-
 		
 		fps_logger = new FPSLogger();
 		
 		
 		PathFinder path_finder = new PathFinder(map, 100);
-		
-//		goon_model.setPlayer(goon);
-//		goon_model_set.add(goon_model);
-		//goon.move(5, 1);
-		
-		
-		for(int i=0; i< 1; i++){
+
+		for(int i=0; i< 50; i++){
 			goon_model = new Model("assets/hitman_walk.png", 18, 13, 15);
 			goon = new Goon(new Rectangle(40,40, 18,13),map,goon_model);
 			goon.setAStarPathFinder(path_finder);
@@ -103,7 +93,7 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		control.update();
-		//player.update();
+		player.update();
 //		if (player.getX() < 400 && player.getY() > 400){
 //			for(Goon g:goon_set) {
 //				g.move(player.getX(),player.getY());
@@ -119,26 +109,25 @@ public class Game extends ApplicationAdapter {
 //				g.moveTo(next);
 //			}
 //		}
-//		goon.moveTo(new Vector2 (100,50));
 		
-		//goon.update();
-//		if (i == 20){
-//			for (Goon g:goon_set){
-//				g.move(player.getX(),player.getY());
-//			}
-//			i=0;
-//		}
-//		else{
-//			i++;
-//		}
+		if (i == 20){
+			for (Goon g:goon_set){
+				g.moveTo(player.getPosition());
+			}
+			i=0;
+		}
+		else{
+			i++;
+		}
 		for (Goon g:goon_set){
 			g.update();
 		}
         camera.update();
         renderer.setView(camera);
         renderer.render();
-        //player_model.draw();
-        //goon_model.draw();
+
+        player_model.draw();
+        
         for (Model gm:goon_model_set){
 			gm.draw();
 		}
