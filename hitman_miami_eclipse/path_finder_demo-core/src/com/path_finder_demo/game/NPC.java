@@ -10,14 +10,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class NPC extends Character {
 	protected static final float EPSILON = 2f;
-	public  Path currentPath;
+	protected  Path currentPath;
 	protected Step finalStep;
 	protected Step currentStep = null;
 	protected PathFinder aStarPathFinder;
 	protected PathFinder linearPathFinder;
 	
 	
-	public NPC (Rectangle hitBox, LevelMap map, Model model){
+	public NPC (Rectangle hitBox, LevelMap map, CharacterView model){
 		super(hitBox, map, model);
 	}
 	public void setAStarPathFinder(PathFinder pathFinder){
@@ -47,7 +47,6 @@ public abstract class NPC extends Character {
 	@Override
 	public void update() {
 		if (!isMoving || currentPath == null){
-			
 			isMoving = false;
 			currentPath = null;
 			currentStep = null;
@@ -55,15 +54,16 @@ public abstract class NPC extends Character {
 		}
 	
 		if (currentStep == null || currentStep.getPosition().epsilonEquals(getPosition(), EPSILON)){
-			
 			if (currentPath.hasNextStep()){
 				currentStep = currentPath.nextStep();
-				move(currentStep.getPosition().sub(getPosition()));
 			}
 			else {
 				currentPath = null;
 				isMoving = false;
 			}
+		}
+		if (isMoving){
+			move(currentStep.getPosition().sub(getPosition()));
 		}
 		super.update();	
 	}
