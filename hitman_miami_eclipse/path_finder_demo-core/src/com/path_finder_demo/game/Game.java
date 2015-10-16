@@ -56,10 +56,9 @@ public class Game extends ApplicationAdapter {
 		
 		//LinearPathFinder path_finder = new LinearPathFinder(map);
 		
-		//player_model = new PlayerModel("assets/hitman_straight_walk.png", 32, 15);
-//		player_model = new Model("assets/hitman_straight_walk.png", 32, 15);
-//		player = new Player(new Rectangle(50,50,16,12),map, player_model);
-//		//player_model.setPlayer(player);
+//		player_model = new PlayerModel("assets/hitman_straight_walk.png", 32, 15);
+		
+//		player_model.setPlayer(player);
 //		player_model.draw();
 		
 		fps_logger = new FPSLogger();
@@ -72,28 +71,34 @@ public class Game extends ApplicationAdapter {
 		//goon.move(5, 1);
 		
 		
+<<<<<<< HEAD
 		for(int i=0; i< 1; i++){
 			goon_model = new Model("assets/hitman_straight_walk.png", 32, 15);
 			goon = new Goon(new Rectangle(50,50, 32,32),map,goon_model);
+=======
+		for(int i=0; i< 50; i++){
+			
+			goon_model = new Model("assets/hitman_walk.png", 18, 13, 15);
+			goon = new Goon(new Rectangle(40,40, 18,13),map,goon_model);
+>>>>>>> refs/remotes/origin/traies
 			goon.setAStarPathFinder(path_finder);
 			goon_model.setPlayer(goon);
 			goon_model_set.add(goon_model);
 			goon_set.add(goon);
 		}
-//		goon_model = new Model("assets/hitman_straight_walk.png", 32, 15);
-//		goon = new Goon(new Rectangle(50,50, 1,1),map,goon_model);
-//		goon.setAStarPathFinder(path_finder);
-//		goon_model.setPlayer(goon);
-//		goon_model_set.add(goon_model);
-//		goon_set.add(goon);
 		
-		control = new ControlHandler(player,goon_set,map);
-		Gdx.input.setInputProcessor(control);
+		
 		rand_array = new RandArray<Vector2>();
 		rand_array.add(new Vector2(200, 150));
 		rand_array.add(new Vector2(700,700));
 		rand_array.add(new Vector2(73,792));
 		rand_array.add(new Vector2(817,48));
+		
+		player_model = new Model("assets/hitman_walk.png", 18, 13, 15);
+		player = new Player(new Rectangle(50,50,18,13),map, player_model);
+		player_model.setPlayer(player);
+		control = new ControlHandler(player,goon_set,map);
+		Gdx.input.setInputProcessor(control);
 		
 	}
 
@@ -104,7 +109,7 @@ public class Game extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		control.update();
-		//player.update();
+		player.update();
 //		if (player.getX() < 400 && player.getY() > 400){
 //			for(Goon g:goon_set) {
 //				g.move(player.getX(),player.getY());
@@ -112,14 +117,15 @@ public class Game extends ApplicationAdapter {
 //			}
 //		}
 		
-//		for(Goon g: goon_set){
-//			
-//			if (!g.isMoving()){
-//				
-//				Vector2 next = rand_array.get();
-//				g.moveTo(next);
-//			}
-//		}
+		for(Goon g: goon_set){
+			
+			if (!g.isMoving()){
+				
+				Vector2 next = rand_array.get();
+				g.moveTo(next);
+			}
+		}
+		
 //		goon.moveTo(new Vector2 (100,50));
 		
 		//goon.update();
@@ -138,8 +144,8 @@ public class Game extends ApplicationAdapter {
         camera.update();
         renderer.setView(camera);
         renderer.render();
-        //player_model.draw();
-        //goon_model.draw();
+        player_model.draw();
+//      goon_model.draw();
         for (Model gm:goon_model_set){
 			gm.draw();
 		}

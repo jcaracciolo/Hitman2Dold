@@ -13,7 +13,6 @@ public class Path {
 		return 0;
 	}
 	public Step nextStep(){
-		System.out.println(counter);
 		return steps.get(--counter);
 	}
 	public boolean hasNextStep(){
