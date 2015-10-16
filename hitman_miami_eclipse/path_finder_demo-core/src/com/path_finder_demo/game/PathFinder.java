@@ -32,7 +32,7 @@ public class PathFinder {
 	    int tx = Math.round(finalPosition.x) / map.getTileWidth();
 	    int ty = Math.round(finalPosition.y) / map.getTileWidth();
 	    
-	    if (map.blocked(null, finalPosition) || (sx == tx && sy == ty)) {
+	    if (map.blocked( finalPosition) || (sx == tx && sy == ty)) {
 		      return null;
 	    }
 	    
@@ -67,8 +67,8 @@ public class PathFinder {
 	            
 	            Vector2 currPosition = new Vector2(xp * map.getTileWidth(),yp * map.getTileWidth());
 	            
-	            if (!map.blocked(null,currPosition)) {
-	              float nextStepCost = current.cost + map.getCost(null,current.x, current.y, xp,yp) + manhattanDistance(current.x,current.y,xp,yp);
+	            if (!map.blocked(currPosition)) {
+	              float nextStepCost = current.cost + map.getCost(current.x, current.y, xp,yp) + manhattanDistance(current.x,current.y,xp,yp);
 	              Node neighbour = nodes[xp][yp];
 	              if (nextStepCost < neighbour.cost) {
 	                if (open.contains(neighbour)) {
@@ -92,14 +92,10 @@ public class PathFinder {
 	    	return null;
 	    }
 	    Path path = new Path();
-	    // agregar la ultima posicion? path.prepend(finalPosition);
-<<<<<<< HEAD
-	    // path.prependStep();
-=======
-	    
->>>>>>> refs/remotes/origin/traies
+
 	    Node target = nodes[tx][ty];
 	    Vector2 stepPosition = new Vector2();
+	    path.prependStep(finalPosition);
 	    while (target != nodes[sx][sy]){
 	    	stepPosition = getStepPosition(target);
 	    	path.prependStep(tileCorrection(stepPosition));

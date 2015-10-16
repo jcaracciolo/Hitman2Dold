@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Character implements Movable {
 	protected static final float NORMAL_SPEED = 60f;
 	protected static final float RUNNING_SPEED = 100f;
-	protected Vector2 direction;
+	protected Vector2 direction;  
 	protected Rectangle hitBox;
 	protected Model model;
 	protected LevelMap map;

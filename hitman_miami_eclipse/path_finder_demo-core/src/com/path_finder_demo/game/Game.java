@@ -19,7 +19,6 @@ public class Game extends ApplicationAdapter {
 	Texture img;
 	TiledMap tiled_map;
 	Goon goon;
-//	NPC npc;
 	Model goon_model;
 	PathFinder path_finder;
 	LevelMap map;
@@ -27,7 +26,6 @@ public class Game extends ApplicationAdapter {
 	OrthogonalTiledMapRenderer renderer;
 	int[][] moveset;
 	int i = 0;
-	double tile_to_pixel_ratio;
 	FPSLogger fps_logger;
 	ControlHandler control;
 	RandArray<Vector2> rand_array;
@@ -35,7 +33,6 @@ public class Game extends ApplicationAdapter {
 	Model player_model;
 	Set<Goon> goon_set = new HashSet<Goon>();
 	Set<Model> goon_model_set = new HashSet<Model>();
-	float timer = 0f;
 	
 	@Override
 	public void create () {
@@ -51,36 +48,16 @@ public class Game extends ApplicationAdapter {
 		
 		
 		LevelMap map = new LevelMap(w,h, 32,tiled_map);
-		tile_to_pixel_ratio = w/(double) map.getWidthInTiles();
-		
-		
-		//LinearPathFinder path_finder = new LinearPathFinder(map);
-		
-//		player_model = new PlayerModel("assets/hitman_straight_walk.png", 32, 15);
-		
-//		player_model.setPlayer(player);
-//		player_model.draw();
 		
 		fps_logger = new FPSLogger();
 		
 		
 		PathFinder path_finder = new PathFinder(map, 100);
-		
-//		goon_model.setPlayer(goon);
-//		goon_model_set.add(goon_model);
-		//goon.move(5, 1);
-		
-		
-<<<<<<< HEAD
-		for(int i=0; i< 1; i++){
-			goon_model = new Model("assets/hitman_straight_walk.png", 32, 15);
-			goon = new Goon(new Rectangle(50,50, 32,32),map,goon_model);
-=======
+	
 		for(int i=0; i< 50; i++){
 			
 			goon_model = new Model("assets/hitman_walk.png", 18, 13, 15);
 			goon = new Goon(new Rectangle(40,40, 18,13),map,goon_model);
->>>>>>> refs/remotes/origin/traies
 			goon.setAStarPathFinder(path_finder);
 			goon_model.setPlayer(goon);
 			goon_model_set.add(goon_model);
@@ -117,27 +94,26 @@ public class Game extends ApplicationAdapter {
 //			}
 //		}
 		
-		for(Goon g: goon_set){
-			
-			if (!g.isMoving()){
-				
-				Vector2 next = rand_array.get();
-				g.moveTo(next);
-			}
-		}
+//		for(Goon g: goon_set){
+//			
+//			if (!g.isMoving()){
+//				
+//				Vector2 next = rand_array.get();
+//				g.moveTo(next);
+//			}
+//		}
 		
 //		goon.moveTo(new Vector2 (100,50));
 		
-		//goon.update();
-//		if (i == 20){
-//			for (Goon g:goon_set){
-//				g.move(player.getX(),player.getY());
-//			}
-//			i=0;
-//		}
-//		else{
-//			i++;
-//		}
+		if (i == 20){
+			for (Goon g:goon_set){
+				g.moveTo(player.getPosition());
+			}
+			i=0;
+		}
+		else{
+			i++;
+		}
 		for (Goon g:goon_set){
 			g.update();
 		}
@@ -145,7 +121,6 @@ public class Game extends ApplicationAdapter {
         renderer.setView(camera);
         renderer.render();
         player_model.draw();
-//      goon_model.draw();
         for (Model gm:goon_model_set){
 			gm.draw();
 		}

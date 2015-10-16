@@ -35,7 +35,7 @@ public class LevelMap {
 	}
 
 	
-	public boolean blocked(Mover mover, Vector2 position) {
+	public boolean blocked( Vector2 position) {
 		float x,y;
 		x = position.x;
 		y = position.y;
@@ -47,7 +47,7 @@ public class LevelMap {
 	}
 
 	
-	public float getCost(Mover mover, int sx, int sy, int tx, int ty) {
+	public float getCost(int sx, int sy, int tx, int ty) {
 		if (sx != tx && sy != ty){
 			return 1.41f;
 		}
@@ -69,7 +69,7 @@ public class LevelMap {
 		for (int x = (int) hit_box.getX(); x < max_width; x+=1){
 			for (int y = (int) hit_box.getY(); y <  max_height; y+= 1){
 				position.set(x, y);
-				if (blocked(null, position)){
+				if (blocked( position)){
 					return false;
 				}
 			}

@@ -30,7 +30,6 @@ public abstract class NPC extends Character {
 		if (finalStep != null && position.epsilonEquals(finalStep.getPosition(), EPSILON )){
 			return false;
 		}
-		
 		Vector2 currPosition = new Vector2();
 		currPosition = hitBox.getPosition(currPosition);
 		Path auxPath = aStarPathFinder.findPath(currPosition, position);

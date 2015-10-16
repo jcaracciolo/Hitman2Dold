@@ -27,7 +27,6 @@ class ControlHandler implements InputProcessor {
 	private boolean mouse_click;
 	private Player player;
 	private LevelMap map;
-//	private Goon goon;
 	private Set<Goon> goonSet;
 	
 	public ControlHandler(Player player, Set<Goon> goonSet, LevelMap map){

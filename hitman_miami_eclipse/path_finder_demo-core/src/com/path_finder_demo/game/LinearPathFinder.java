@@ -9,7 +9,7 @@ public class LinearPathFinder {
 		this.map = map;
 	}
 	public Path findPath(int sx, int sy, int tx, int ty){
-		if (map.blocked(null,new Vector2(tx,ty))){
+		if (map.blocked(new Vector2(tx,ty))){
 			return null;
 		}
 		Path path = new Path(); 
@@ -20,7 +20,7 @@ public class LinearPathFinder {
 		for(float x = sx; Math.abs(tx-x) > 1 ; x+=inc_x){
 			for (float y = sy;  Math.abs(ty-y) > 1; y+=inc_y){
 				
-				if (map.blocked(null, new Vector2((int)x, (int)y))){
+				if (map.blocked( new Vector2((int)x, (int)y))){
 					return null;
 				}
 				else {
