@@ -24,15 +24,14 @@ public abstract class NPC extends Character {
 		this.aStarPathFinder = pathFinder;
 	}
 	
-	@Override
+	
 	public boolean moveTo(Vector2 position) {
-		
 		if (finalStep != null && position.epsilonEquals(finalStep.getPosition(), EPSILON )){
 			return false;
 		}
 		Vector2 currPosition = new Vector2();
 		currPosition = hitBox.getPosition(currPosition);
-		Path auxPath = aStarPathFinder.findPath(currPosition, position);
+		Path auxPath = aStarPathFinder.findPath(this, currPosition, position);
 		if (auxPath != null && auxPath.hasNextStep()){
 			currentPath = auxPath;
 			currentStep = currentPath.nextStep();
@@ -40,7 +39,6 @@ public abstract class NPC extends Character {
 			isMoving = true;
 			return true;
 		}
-		
 		return false;
 	}
 	

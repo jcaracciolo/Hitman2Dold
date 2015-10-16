@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Character implements Movable {
-	protected static final float DIRECTIONAL_EPSILON = 0.1f;
+	protected static final float DIRECTIONAL_EPSILON = 0.05f;
 	protected static final float NORMAL_SPEED = 60f;
 	protected static final float RUNNING_SPEED = 100f;
 	protected Vector2 direction;
@@ -58,7 +58,14 @@ public abstract class Character implements Movable {
 	}
 
 	@Override
-	public abstract boolean moveTo(Vector2 position);
+	public float getWidth() {
+		return hitBox.getWidth();
+	}
+	
+	@Override
+	public float getHeight() {
+		return hitBox.getHeight();
+	}
 	
 	@Override
 	public void update(){
@@ -96,12 +103,12 @@ public abstract class Character implements Movable {
 			if (direction.x!= 0 && Math.abs(direction.x) <  DIRECTIONAL_EPSILON) {
 				direction = new Vector2(1f * Math.signum(direction.y), direction.y).nor();
 			}
-			currHitBox = getDirectionalHitBox(new Vector2(direction.x,0), speed);
+			currHitBox = getDirectionalHitBox(new Vector2(direction.x,0).nor(), speed);
 			if (!map.isValid(currHitBox) || direction.x == 0f){
 				if (direction.y!= 0 && Math.abs(direction.y) < DIRECTIONAL_EPSILON) {
 					direction = new Vector2(direction.x, 1f * Math.signum(direction.y)).nor();
 				}
-				currHitBox = getDirectionalHitBox(new Vector2(0,direction.y), speed);
+				currHitBox = getDirectionalHitBox(new Vector2(0,direction.y).nor(), speed);
 				if (!map.isValid(currHitBox) || direction.y == 0f){
 				    isMoving = false;
 					return;
