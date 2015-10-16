@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Model {
+public class CharacterView {
 	Character character;
 	SpriteBatch batch;
 	Texture texture;
@@ -19,7 +19,7 @@ public class Model {
 	
 	//"assets/hitman_straight_walk_x2.png"
 	
-	public Model(String sprite_path,int sprite_width,int spriteLength, int animation_length){
+	public CharacterView(String sprite_path,int sprite_width,int spriteLength, int animation_length){
 		
 		batch = new SpriteBatch();
 		texture = new Texture(Gdx.files.internal(sprite_path));

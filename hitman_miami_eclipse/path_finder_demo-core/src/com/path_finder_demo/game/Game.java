@@ -20,7 +20,7 @@ public class Game extends ApplicationAdapter {
 	TiledMap tiled_map;
 	Goon goon;
 //	NPC npc;
-	Model goon_model;
+	CharacterView goon_model;
 	PathFinder path_finder;
 	LevelMap map;
 	OrthographicCamera camera;
@@ -32,9 +32,9 @@ public class Game extends ApplicationAdapter {
 	ControlHandler control;
 	RandArray<Vector2> rand_array;
 	Player player;
-	Model player_model;
+	CharacterView player_model;
 	Set<Goon> goon_set = new HashSet<Goon>();
-	Set<Model> goon_model_set = new HashSet<Model>();
+	Set<CharacterView> goon_model_set = new HashSet<CharacterView>();
 	float timer = 0f;
 	
 	@Override
@@ -73,7 +73,7 @@ public class Game extends ApplicationAdapter {
 		
 		for(int i=0; i< 50; i++){
 			
-			goon_model = new Model("assets/hitman_walk.png", 18, 13, 15);
+			goon_model = new CharacterView("assets/hitman_walk.png", 18, 13, 15);
 			goon = new Goon(new Rectangle(40,40, 18,13),map,goon_model);
 			goon.setAStarPathFinder(path_finder);
 			goon_model.setPlayer(goon);
@@ -88,7 +88,7 @@ public class Game extends ApplicationAdapter {
 		rand_array.add(new Vector2(73,792));
 		rand_array.add(new Vector2(817,48));
 		
-		player_model = new Model("assets/hitman_walk.png", 18, 13, 15);
+		player_model = new CharacterView("assets/hitman_walk.png", 18, 13, 15);
 		player = new Player(new Rectangle(50,50,18,13),map, player_model);
 		player_model.setPlayer(player);
 		control = new ControlHandler(player,goon_set,map);
@@ -140,7 +140,7 @@ public class Game extends ApplicationAdapter {
         renderer.render();
         player_model.draw();
 //      goon_model.draw();
-        for (Model gm:goon_model_set){
+        for (CharacterView gm:goon_model_set){
 			gm.draw();
 		}
         

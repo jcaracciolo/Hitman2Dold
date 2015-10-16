@@ -14,12 +14,12 @@ public abstract class Character implements Movable {
 	protected static final float RUNNING_SPEED = 100f;
 	protected Vector2 direction;
 	protected Rectangle hitBox;
-	protected Model model;
+	protected CharacterView model;
 	protected LevelMap map;
 	protected boolean running;
 	protected boolean isMoving = false;
 	
-	public Character(Rectangle hitBox, LevelMap map, Model model){
+	public Character(Rectangle hitBox, LevelMap map, CharacterView model){
 		this.direction = new Vector2();
 		this.map = map;
 		this.model = model;

@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Goon extends NPC {
 	
-	public Goon(Rectangle hitBox, LevelMap map, Model model){
+	public Goon(Rectangle hitBox, LevelMap map, CharacterView model){
 		super(hitBox, map,model);
 	}
 }
