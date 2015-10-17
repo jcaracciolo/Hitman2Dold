@@ -94,7 +94,7 @@ public class PathFinder {
 	    
 	    Node target = nodes[tx][ty];
 	    Vector2 stepPosition = new Vector2();
-	    path.prependStep(finalPosition);
+	    
 	    while (target != nodes[sx][sy]){
 	    	stepPosition = getStepCorrection(movable,target);
 	    	path.prependStep(stepPosition);
@@ -116,7 +116,6 @@ public class PathFinder {
 	}
 	private int manhattanDistance(int x, int y, int xp, int yp){
 		return Math.abs(xp - x) + Math.abs(yp -y);
-//		return 0;
 	}
 	private void cleanNodes(){
 		for(Node[] arr:nodes){

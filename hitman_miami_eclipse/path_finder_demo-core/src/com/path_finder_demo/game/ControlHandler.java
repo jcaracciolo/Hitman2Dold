@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,12 +28,13 @@ class ControlHandler implements InputProcessor {
 	private boolean mouse_click;
 	private Player player;
 	private LevelMap map;
-	private Set<Goon> goonSet;
+	private Set<NPC> goonSet;
+	private PostOffice postOffice;
 	
-	public ControlHandler(Player player, Set<Goon> goonSet, LevelMap map){
+	public ControlHandler(Player player, LevelMap map){
 		this.player = player;
 		this.map = map;
-		this.goonSet = goonSet;
+		this.postOffice = PostOffice.getInstance();
 	}
 	public void update(){
 		float x,y;
@@ -57,8 +59,9 @@ class ControlHandler implements InputProcessor {
 		}
 		if (mouse_click){
 			mouse_click = false;
-			for(Goon g: goonSet)
-				g.moveTo(new Vector2(mouse_x,864- mouse_y));
+			Vector2 noisePosition = new Vector2(mouse_x, mouse_y);
+			Message message = new Noise(noisePosition,100, true);
+			postOffice.post(new Post(PostOffice.NOISE, new Timer(0), message));
 		}
 	}
 	
@@ -109,7 +112,7 @@ class ControlHandler implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
     	mouse_click = true;
     	mouse_x = screenX;
-    	mouse_y = screenY;
+    	mouse_y = Gdx.graphics.getHeight() - screenY;
         return false;
     	
     }
