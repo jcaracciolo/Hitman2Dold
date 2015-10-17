@@ -5,14 +5,14 @@ import java.util.Collections;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class PathFinder {
+public class AStarPathFinder implements PathFinder {
 	private ArrayList<Node> closed = new ArrayList<Node>();
 	private ArrayList<Node> open = new ArrayList<Node>();
 	private Node[][] nodes;
 	private LevelMap map;
 	private int maxSearchDistance;
 	
-	public PathFinder(LevelMap map, int maxSearchDistance){
+	public AStarPathFinder(LevelMap map, int maxSearchDistance){
 		this.map = map;
 		this.maxSearchDistance = maxSearchDistance;
 		nodes = new Node[map.getWidthInTiles()][map.getHeightInTiles()];

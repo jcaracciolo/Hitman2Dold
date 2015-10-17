@@ -16,6 +16,10 @@ public abstract class NPC extends Character {
 	private PathFinder aStarPathFinder;
 	private PathFinder linearPathFinder;
 	private Context context;
+	private Strategy calmBehaviour;
+	private Strategy suspiciousBehaviour;
+	private Strategy alertBehaviour;
+	private Strategy currentBehaviour;
 	
 	public NPC (Rectangle hitBox, LevelMap map, CharacterView model){
 		super(hitBox, map, model);
@@ -24,15 +28,34 @@ public abstract class NPC extends Character {
 	public void setAStarPathFinder(PathFinder pathFinder){
 		this.aStarPathFinder = pathFinder;
 	}
-	
-	
-	public boolean moveTo(Vector2 position) {
+	public void setLinearPathFinder(PathFinder pathFinder) {
+		this.linearPathFinder = pathFinder;
+	}
+	public void setCalmBehaviour(Strategy calmBehaviour) {
+		this.calmBehaviour = calmBehaviour;
+	}
+	public void setSuspiciousBehaviour (Strategy suspiciousBehaviour) {
+		this.suspiciousBehaviour = suspiciousBehaviour;
+	}
+	public void setAlertBehaviour (Strategy alertBehaviour) {
+		this.alertBehaviour = alertBehaviour;
+	}
+	public boolean moveTo(Vector2 position, boolean linear) {
 		if (finalStep != null && position.epsilonEquals(finalStep.getPosition(), EPSILON )){
 			return false;
 		}
 		Vector2 currPosition = new Vector2();
 		currPosition = hitBox.getPosition(currPosition);
-		Path auxPath = aStarPathFinder.findPath(this, currPosition, position);
+		
+		PathFinder pathFinder;
+		if (linear) {
+			pathFinder = linearPathFinder;
+		}
+		else {
+			pathFinder = aStarPathFinder;
+		}
+		
+		Path auxPath = pathFinder.findPath(this, currPosition, position);
 		if (auxPath != null && auxPath.hasNextStep()){
 			currentPath = auxPath;
 			currentStep = currentPath.nextStep();
@@ -45,6 +68,13 @@ public abstract class NPC extends Character {
 	
 	@Override
 	public void update() {
+		selectBehaviour();
+		currentBehaviour.behave(context);
+		context.flush();
+		updatePosition();
+		super.update();	
+	}
+	private void updatePosition() {
 		if (!isMoving || currentPath == null){
 			isMoving = false;
 			currentPath = null;
@@ -63,15 +93,30 @@ public abstract class NPC extends Character {
 		}
 		if (isMoving){
 			/*
-			 * Ineficiente? Probablemete, pero me soluciona la vida por ahora. (Tiene que hacer una raiz cuadrada por frame) 
+			 * Ineficiente? Probablemente, pero me soluciona la vida por ahora. (Tiene que hacer una raiz cuadrada por frame) 
 			 */
 			move(currentStep.getPosition().sub(getPosition()));
 		}
-		super.update();	
 	}
-	
+	private void selectBehaviour() {
+		
+		if (context.playerIsVisible() || !alertBehaviour.done()) {
+			
+			currentBehaviour = alertBehaviour;
+		}
+//		else if (context.getNoise() != null || !suspiciousBehaviour.done()) {
+//			
+//			currentBehaviour = suspiciousBehaviour;
+//		}
+		else {
+			
+			currentBehaviour = calmBehaviour;
+		}
+	}
 	public void addToContext(Noise n){
 		context.add(n);
 	}
-
+	public void addToContext(Vector2 playerPosition) {
+		context.add(playerPosition);
+	}
 }

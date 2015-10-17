@@ -44,7 +44,7 @@ public class PostOffice {
 			}
 		}
 		postList.removeAll(removeList);
-		noiseHandler.handle();
+		
 		
 	}
 	

@@ -2,6 +2,7 @@ package com.path_finder_demo.game;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,29 +10,44 @@ public class LevelMap {
 	
 	private int width;
 	private int height;
-	private TiledMap tiled_map;
-	private int tile_width;
-	TiledMapTileLayer foreground;
+	private int widthInTiles;
+	private int heightInTiles;
+	private int tileWidth;
+	private Rectangle[][] modelMap;
 	
-	public LevelMap(int width, int height,int tile_width, TiledMap tiled_map){
+	public LevelMap(int width, int height,int tileWidth, TiledMap tiledMap){
 		this.width = width;
 		this.height = height;
-		this.tile_width = tile_width;
-		this.tiled_map = tiled_map;
-		this.foreground =  (TiledMapTileLayer)tiled_map.getLayers().get(1);
+		this.tileWidth = tileWidth;
+		this.widthInTiles = width / tileWidth;
+		this.heightInTiles = height / tileWidth;
+		TiledMapTileLayer foreground =  (TiledMapTileLayer)tiledMap.getLayers().get(1);
+		this.modelMap = new Rectangle[widthInTiles][heightInTiles];
+		
+		for (int x = 0; x < this.widthInTiles; x++) {
+			for (int y = 0; y < this.heightInTiles ; y++) {
+				if (foreground.getCell(x, y) == null) {
+					modelMap[x][y] = null;
+				}
+				else {
+					modelMap[x][y] = new Rectangle(x * tileWidth, y * tileWidth, tileWidth,tileWidth);
+				}
+			}
+		}
+		
 		//level_array[5][10] = true;
 	}
 	public int getTileWidth(){
-		return tile_width;
+		return tileWidth;
 	}
 	
 	public int getWidthInTiles() {
-		return width / tile_width;
+		return widthInTiles;
 	}
 
 	
 	public int getHeightInTiles() {
-		return height /tile_width;
+		return heightInTiles;
 	}
 
 	
@@ -43,7 +59,9 @@ public class LevelMap {
 		if (x < 0 || (y < 0) || x >= width || y >= height){
 			return true;
 		}
-		return foreground.getCell((int)x / tile_width, (int)y / tile_width) != null;
+		int xp = (int)x / tileWidth;
+		int yp = (int)y / tileWidth;
+		return modelMap[xp][yp] != null;
 	}
 
 	
@@ -53,28 +71,52 @@ public class LevelMap {
 		}
 		return 1f;
 	}
-
-
-	public int tilePosition(int x){
-		return x / tile_width;
-	}
-	
-	public boolean isValid(Rectangle hit_box) {
-		int max_height =(int) (hit_box.getY() + hit_box.getHeight());
-		int max_width = (int) (hit_box.getX() + hit_box.getWidth());
-		
-		Vector2 position = new Vector2();
-		
-		//posiblemente ineficiente?
-		for (int x = (int) hit_box.getX(); x < max_width; x+=1){
-			for (int y = (int) hit_box.getY(); y <  max_height; y+= 1){
-				position.set(x, y);
-				if (blocked( position)){
+	/*
+	 * El metodo recorre todo el array del mapa a ver si encuentra un rectangulo
+	 * con el que el hitBox colisiona.
+	 */
+	public boolean isValid(Rectangle hitBox) {
+		for (int x = 0; x < widthInTiles; x++ ) {
+			for (int y = 0; y < heightInTiles; y++) {
+				if (modelMap[x][y] != null && modelMap[x][y].overlaps(hitBox)) {
 					return false;
 				}
 			}
 		}
 		return true;
+	}
+	/*
+	 * Lo mismo que lo anterior para un segmento.
+	 */
+	
+	public boolean isValid(Vector2 startPosition, Vector2 finalPosition ) {
+		for (int x = 0; x < widthInTiles; x++ ) {
+			for (int y = 0; y < heightInTiles; y++) {
+				if (modelMap[x][y] != null && rectangleSegmentIntersects(modelMap[x][y], startPosition, finalPosition)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	private boolean rectangleSegmentIntersects(Rectangle hitBox, Vector2 startPos, Vector2 finalPos) {
+		Vector2[] vortexs = new Vector2[4];
+		vortexs[0] = hitBox.getPosition(new Vector2());
+		vortexs[1] = hitBox.getPosition(new Vector2()).add(0,hitBox.width);
+		vortexs[2] = hitBox.getPosition(new Vector2()).add(hitBox.height, hitBox.width);
+		vortexs[3] = hitBox.getPosition(new Vector2()).add(hitBox.height, 0);
+		
+		for (int i=0; i<3; i++) {
+			if (Intersector.intersectSegments(startPos, finalPos, vortexs[i], vortexs[i+1],null)) {
+				return true;
+			}
+		}
+		if (Intersector.intersectSegments(startPos, finalPos, vortexs[3], vortexs[0],null)) {
+			return true;
+		}
+		return false;
+		
 	}
 	
 }

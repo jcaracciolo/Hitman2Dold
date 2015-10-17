@@ -21,7 +21,7 @@ public class Game extends ApplicationAdapter {
 	Goon goon;
 //	NPC npc;
 	CharacterView goon_model;
-	PathFinder path_finder;
+	AStarPathFinder path_finder;
 	LevelMap map;
 	OrthographicCamera camera;
 	OrthogonalTiledMapRenderer renderer;
@@ -29,13 +29,14 @@ public class Game extends ApplicationAdapter {
 	int i = 0;
 	FPSLogger fps_logger;
 	ControlHandler control;
-	RandArray<Vector2> rand_array;
 	Player player;
 	CharacterView player_model;
 	Set<NPC> goon_set = new HashSet<NPC>();
 	PostOffice postOffice = PostOffice.getInstance();
 	Set<CharacterView> goon_model_set = new HashSet<CharacterView>();
 	float timer = 0f;
+	NoiseHandler noiseHandler;
+	VisionHandler visionHandler;
 	
 	@Override
 	public void create () {
@@ -56,29 +57,35 @@ public class Game extends ApplicationAdapter {
 		//LinearPathFinder path_finder = new LinearPathFinder(map);
 		
 		fps_logger = new FPSLogger();
+		RandArray<Vector2> randArray = new RandArray<Vector2>();
+		randArray.add(new Vector2(200, 150));
+		randArray.add(new Vector2(700,700));
+		randArray.add(new Vector2(73,792));
+		randArray.add(new Vector2(817,48));
 		
-		
-		PathFinder path_finder = new PathFinder(map, 100);
-
+		AStarPathFinder path_finder = new AStarPathFinder(map, 100);
+		PathFinder linearPathFinder = new LinearPathFinder(map);
 		for(int i=0; i< 10; i++){		
 			goon_model = new CharacterView("assets/hitman_walk.png", 18, 13, 15);
 			goon = new Goon(new Rectangle(40,40, 18,13),map,goon_model);
 			goon.setAStarPathFinder(path_finder);
+			goon.setLinearPathFinder(linearPathFinder);
+			Strategy followStrategy = new FollowStrategy(goon);
+			goon.setAlertBehaviour(followStrategy);
+			Strategy patrolStrategy = new PatrolStrategy(randArray,goon);
+			goon.setCalmBehaviour(patrolStrategy);
 			goon_model.setPlayer(goon);
 			goon_model_set.add(goon_model);
 			goon_set.add(goon);
 		}
 		
 		
-		rand_array = new RandArray<Vector2>();
-		rand_array.add(new Vector2(200, 150));
-		rand_array.add(new Vector2(700,700));
-		rand_array.add(new Vector2(73,792));
-		rand_array.add(new Vector2(817,48));
+		
 		player_model = new CharacterView("assets/hitman_walk.png", 18, 13, 15);
 		player = new Player(new Rectangle(50,50,18,13),map, player_model);
 		player_model.setPlayer(player);
-		NoiseHandler noiseHandler = new NoiseHandler(goon_set, path_finder);
+		noiseHandler = new NoiseHandler(goon_set, path_finder);
+		visionHandler = new VisionHandler(goon_set, player, linearPathFinder);
 		
 		postOffice.setNoiseHandler(noiseHandler);
 		control = new ControlHandler(player,map);
@@ -99,16 +106,18 @@ public class Game extends ApplicationAdapter {
 		catch(WrongMessageException e){
 			System.out.println("Wrong Message");
 		}
+		noiseHandler.handle();
+		visionHandler.handle();
 		player.update();
 		
-		for(NPC g: goon_set){
-			
-			if (!g.isMoving()){
-				
-				Vector2 next = rand_array.get();
-				g.moveTo(next);
-			}
-		}
+//		for(NPC g: goon_set){
+//			
+//			if (!g.isMoving()){
+//				
+//				Vector2 next = rand_array.get();
+//				g.moveTo(next, true);
+//			}
+//		}
 		
 //		if (i == 20){
 //			for (Goon g:goon_set){

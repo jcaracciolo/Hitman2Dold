@@ -8,19 +8,30 @@ package com.path_finder_demo.game;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class Context {
 	private Set<Noise> noiseSet;
+	private Vector2 playerPosition;
 	
 	public Context() {
 		this.noiseSet = new HashSet<Noise>();
+		this.playerPosition = null;
 	}
 	public boolean playerIsVisible() {
-		//TODO
-		return true;
+		return playerPosition != null;
 	}
+	public Vector2 getPlayerPosition() {
+		return playerPosition;
+	}
+	public void setPlayerPosition(Vector2 playerPosition) {
+		this.playerPosition = playerPosition;
+	}
+	
 	/*
 	 * Devuelve el sonido mas fuerte, null si es vacio.
 	 */
+	
 	public Noise getNoise() {
 		Noise maxNoise = null;
 		for (Noise n: noiseSet) {
@@ -39,8 +50,12 @@ public class Context {
 		noiseSet.add(noise);
 		System.out.println("BANG!!!");
 	}
+	public void add(Vector2 playerPosition) {
+		this.playerPosition = playerPosition;
+	}
 	public void flush() {
 		noiseSet = new HashSet<Noise>();
+		playerPosition = null;
 		return;
 	}
 	

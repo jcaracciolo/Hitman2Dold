@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Character implements Movable {
-	protected static final float DIRECTIONAL_EPSILON = 0.05f;
+	protected static final float DIRECTIONAL_EPSILON = .05f;
 	protected static final float NORMAL_SPEED = 60f;
 	protected static final float RUNNING_SPEED = 100f;
 	protected Vector2 direction;
