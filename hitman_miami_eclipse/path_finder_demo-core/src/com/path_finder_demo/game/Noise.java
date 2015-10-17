@@ -13,14 +13,18 @@ import com.badlogic.gdx.math.Vector2;
  *
  */
 
-public class Noise implements Message{
+public class Noise {
 	private Vector2 source ;
 	private double effectiveRange ;
+	private Character emitter; 
+	private NoiseHandler handler ;
 	private boolean isShot ;
 	
-	public Noise(Vector2 source,double effectiveRange, boolean isShot) {
+	public Noise(Vector2 source, Character emitter,double effectiveRange, NoiseHandler handler, boolean isShot) {
 		this.source=source ;
+		this.emitter=emitter ;
 		this.effectiveRange = effectiveRange ;
+		this.handler=handler; 
 		this.isShot= isShot ;
 	}
 	
@@ -32,7 +36,15 @@ public class Noise implements Message{
 		return this.effectiveRange;
 	}
 	
+	public Character getEmitter(){
+		return this.emitter;
+	}
+	
 	public boolean isShot() {
 		return isShot ;
+	}
+	
+	public void manage() {
+		handler.warn(this);
 	}
 }

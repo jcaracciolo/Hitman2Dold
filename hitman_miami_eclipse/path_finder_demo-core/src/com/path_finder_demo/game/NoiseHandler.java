@@ -1,8 +1,6 @@
 
 package com.path_finder_demo.game;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,16 +10,11 @@ import java.util.Set;
  *
  */
 
-public class NoiseHandler implements Handler{
-	
+public class NoiseHandler {
 	private Set<NPC> npc_set ;
-	private List<Noise> noiseList;
-	private AStarPathFinder pathFinder;
 	
-	public NoiseHandler(Set<NPC> npc_set, AStarPathFinder pathFinder){
+	public NoiseHandler(Set<NPC> npc_set){
 		this.npc_set = npc_set ;
-		this.noiseList = new ArrayList<Noise>();
-		this.pathFinder = pathFinder;
 	}
 	
 	/**
@@ -34,9 +27,11 @@ public class NoiseHandler implements Handler{
 			warnAll(noise);
 		}
 		for (NPC npc : npc_set){
-			Path noisePath = pathFinder.findPath(npc, npc.getPosition(), noise.getSource());
-			if (noisePath!= null) {
-				npc.addToContext(noise);
+			if (npc.getPosition().dst(noise.getSource())<= noise.getRange()){
+				if (!noise.getEmitter().getClass().isInstance(npc)) {
+					
+					npc.moveTo(noise.getSource(),false);
+				}
 			}
 		}
 	}
@@ -49,31 +44,7 @@ public class NoiseHandler implements Handler{
 	 */
 	private void warnAll(Noise noise){
 		for (NPC npc : npc_set){
-			npc.addToContext(noise);
+			npc.moveTo(noise.getSource(),false);
 		}
 	}
-	
-	/*
-	 * TODO: aca puse que catchee todas las excepciones porque no se como se llama la 
-	 * excepcion de error de casteo.
-	 */
-	@Override
-	public void send (Message message) throws WrongMessageException{
-		try {
-			noiseList.add((Noise) message);
-		}
-		catch(Exception e) {
-			throw new WrongMessageException();
-		}
-	}
-	@Override
-	public void handle() {
-		List<Noise> removeList = new ArrayList<Noise>();
-		for (Noise n: noiseList) {
-			warn(n);
-			removeList.add(n);
-		}
-		noiseList.removeAll(removeList);
-	}
-	
 }

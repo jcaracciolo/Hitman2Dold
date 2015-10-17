@@ -28,13 +28,12 @@ class ControlHandler implements InputProcessor {
 	private boolean mouse_click;
 	private Player player;
 	private LevelMap map;
-	private Set<NPC> goonSet;
-	private PostOffice postOffice;
+	private Set<Goon> goonSet;
 	
-	public ControlHandler(Player player, LevelMap map){
+	public ControlHandler(Player player, Set<Goon> goonSet, LevelMap map){
 		this.player = player;
 		this.map = map;
-		this.postOffice = PostOffice.getInstance();
+		this.goonSet = goonSet;
 	}
 	public void update(){
 		float x,y;
@@ -57,12 +56,11 @@ class ControlHandler implements InputProcessor {
 		else {
 			player.stopMoving();
 		}
-		if (mouse_click){
-			mouse_click = false;
-			Vector2 noisePosition = new Vector2(mouse_x, mouse_y);
-			Message message = new Noise(noisePosition,100, true);
-			postOffice.post(new Post(PostOffice.NOISE, new Timer(0), message));
-		}
+//		if (mouse_click){
+//			mouse_click = false;
+//			for(Goon g: goonSet)
+//				g.moveTo(new Vector2(mouse_x, mouse_y),move_run);
+//		}
 	}
 	
 	

@@ -1,11 +1,21 @@
 /*
  *@author Tomas Raies
- *@date   17 de oct. de 2015
+ *@date   Oct 16, 2015
  */
 
 package com.path_finder_demo.game;
 
-public interface Handler {
-	public void handle();
-	public void send(Message message) throws WrongMessageException;
+public class Handler {
+	
+	/*
+	 * Deberia tener un gameConatiner
+	 * Handler para los NPC
+	 * Handler para el player
+	 * el handler del player debera ser parecido al ControlHandler, pero extender ambas interfaces
+	 * inputprocessor y handler
+	 * Handler para el target
+	 * 
+	 * 
+	 */
+
 }
