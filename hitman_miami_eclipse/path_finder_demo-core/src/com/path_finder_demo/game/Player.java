@@ -16,11 +16,7 @@ public class Player extends Character {
 		super(hitBox, map, model);
 	}
 
-	@Override
-	public boolean moveTo(Vector2 position) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 	@Override
 	public void update() {
 		// TODO
