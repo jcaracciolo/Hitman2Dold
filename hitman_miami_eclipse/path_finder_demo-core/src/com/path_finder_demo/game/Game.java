@@ -1,6 +1,7 @@
 package com.path_finder_demo.game;
 
 import java.util.HashSet;
+
 import java.util.Set;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -9,11 +10,13 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
 
 public class Game extends ApplicationAdapter {
 	Texture img;
@@ -33,6 +36,8 @@ public class Game extends ApplicationAdapter {
 	Model player_model;
 	Set<Goon> goon_set = new HashSet<Goon>();
 	Set<Model> goon_model_set = new HashSet<Model>();
+	
+	
 	
 	@Override
 	public void create () {
@@ -78,6 +83,8 @@ public class Game extends ApplicationAdapter {
 		control = new ControlHandler(player,goon_set,map);
 		Gdx.input.setInputProcessor(control);
 		
+		
+		
 	}
 
 	@Override
@@ -85,7 +92,7 @@ public class Game extends ApplicationAdapter {
 		fps_logger.log();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+	
 		control.update();
 		player.update();
 //		if (player.getX() < 400 && player.getY() > 400){
